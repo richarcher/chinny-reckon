@@ -7,6 +7,7 @@ body {
   background: #000;
   overflow-y: scroll;
   overflow-x: hidden;
+  font-family: "Helvetica-Neue", "Helvetica", "sans-serif"
 }
 .ie7 body{
   overflow:hidden;
@@ -15,6 +16,32 @@ a{
   color: #333;
   text-decoration: none;
 }
+
+h1 {
+  color: #fff;
+  padding: 0;
+  margin: 0;
+}
+
+footer {
+  background: #000;
+  background: rgba(0,0,0,0.4);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+footer a {
+  display: inline-block;
+  font-size: 0.8em;
+  color: #444;
+  padding: 0.8em;
+}
+a:hover,
+a:focus {
+  color: #ccc;
+}
+
 .image,
 .image:after {
   position: fixed;
@@ -25,6 +52,7 @@ a{
   z-index: 0;
 }
 .image {
+  text-indent: -100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
