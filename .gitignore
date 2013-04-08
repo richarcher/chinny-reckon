@@ -2,4 +2,3 @@
 node_modules/*
 dist/*
 src/i/*.gif
-src/js/main.js

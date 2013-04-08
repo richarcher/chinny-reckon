@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     cssmin: {
       compress: {
         files: {
-          'dist/css/style.css': ['src/css/style.css']
+          'src/css/style.min.css': ['src/css/style.css']
         }
       }
     },
@@ -54,8 +54,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerMultiTask('addchins', "Finds all chins and adds them to main.js", function () {
-    var path, filesarr = [], filestr;
-    path = require('path');
+    var filesarr = [], filestr;
 
     this.files.forEach(function(file) {
       file.src.forEach(function(src) {
@@ -73,12 +72,29 @@ module.exports = function(grunt) {
     );
   });
 
+  grunt.registerTask('inlinecss', "Inlines CSS", function () {
+    var cssmin;
+    cssmin = grunt.file.read('src/css/style.min.css');
+    grunt.file.write('src/index.html',
+      grunt.template.process(
+        grunt.file.read('src/template/index.html.tmpl'),
+        { data: { styles : cssmin } }
+      )
+    );
+  });
+
+  grunt.registerTask('tidyup', "Remove unneeded files", function () {
+    grunt.file.delete('src/index.html');
+    grunt.file.delete('src/js/main.js');
+    grunt.file.delete('src/css/style.min.css');
+  });
+
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
-  grunt.registerTask('default', ['copy', 'addchins', 'uglify', 'cssmin', 'htmlmin']);
+  grunt.registerTask('default', ['copy', 'addchins', 'uglify', 'cssmin', 'inlinecss', 'htmlmin', 'tidyup']);
 
 };
