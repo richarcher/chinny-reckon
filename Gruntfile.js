@@ -16,8 +16,7 @@ module.exports = function(grunt) {
           wrap: true
         },
         files: {
-          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js', 'src/js/ga.js'],
-          'src/js/modernizr.custom.86080.min.js': ['src/js/modernizr.custom.86080.js']
+          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js', 'src/js/ga.js']
         }
       },
       dev: {
@@ -28,8 +27,7 @@ module.exports = function(grunt) {
           wrap: true
         },
         files: {
-          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js'],
-          'src/js/modernizr.custom.86080.min.js': ['src/js/modernizr.custom.86080.js']
+          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js']
         }
       }
     },
@@ -87,7 +85,6 @@ module.exports = function(grunt) {
   grunt.registerTask('inliner', "Inlines CSS", function () {
     var cssmin, modernizrmin, mainmin;
     cssmin = grunt.file.read('src/css/style.min.css');
-    modernizrmin = grunt.file.read('src/js/modernizr.custom.86080.min.js')
     mainmin = grunt.file.read('src/js/main.js')
     grunt.file.write('src/index.html',
       grunt.template.process(
@@ -95,7 +92,6 @@ module.exports = function(grunt) {
         {
           data: {
             styles : cssmin,
-            modernizrjs : modernizrmin,
             mainjs : mainmin
           }
         }
@@ -107,7 +103,6 @@ module.exports = function(grunt) {
     grunt.file.delete('src/index.html');
     grunt.file.delete('src/js/main.js');
     grunt.file.delete('src/css/style.min.css');
-    grunt.file.delete('src/js/modernizr.custom.86080.min.js');
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
