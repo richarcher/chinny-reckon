@@ -4,6 +4,7 @@ var hash = location.hash.slice(1) + ".gif",
 
 var changeChin = function ( chin ) {
   if (typeof chin === "undefined" || chin === ".gif") {
+    location.hash = "";
     image = images[Math.floor(Math.random() * images.length )];
   } else {
     image = chin;
