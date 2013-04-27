@@ -16,6 +16,15 @@ module.exports = function(grunt) {
           'src/js/main.js': ['src/js/main.js'],
           'src/js/modernizr.custom.86080.min.js': ['src/js/modernizr.custom.86080.js']
         }
+      },
+      dev: {
+        options: {
+          beautify: true
+        },
+        files: {
+          'src/js/main.js': ['src/js/main.js'],
+          'src/js/modernizr.custom.86080.min.js': ['src/js/modernizr.custom.86080.js']
+        }
       }
     },
     cssmin: {
@@ -101,6 +110,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
-  grunt.registerTask('default', ['copy', 'addchins', 'uglify', 'cssmin', 'inliner', 'htmlmin', 'tidyup']);
+  grunt.registerTask('dist', ['copy', 'addchins', 'uglify:dist', 'cssmin', 'inliner', 'htmlmin', 'tidyup']);
+  grunt.registerTask('dev', ['addchins', 'uglify:dev', 'cssmin', 'inliner']);
 
 };
