@@ -12,17 +12,23 @@ module.exports = function(grunt) {
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     uglify: {
       dist: {
+        options: {
+          wrap: true
+        },
         files: {
-          'src/js/main.js': ['src/js/main.js'],
+          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js', 'src/js/ga.js'],
           'src/js/modernizr.custom.86080.min.js': ['src/js/modernizr.custom.86080.js']
         }
       },
       dev: {
         options: {
-          beautify: true
+          beautify: true,
+          mangle: false,
+          compress: false,
+          wrap: true
         },
         files: {
-          'src/js/main.js': ['src/js/main.js'],
+          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js'],
           'src/js/modernizr.custom.86080.min.js': ['src/js/modernizr.custom.86080.js']
         }
       }
