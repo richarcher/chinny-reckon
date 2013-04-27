@@ -13,13 +13,13 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          'dist/js/main.js': ['src/js/main.js'],
-          'dist/js/modernizr.custom.86080.js': ['src/js/modernizr.custom.86080.js']
+          'src/js/main.js': ['src/js/main.js'],
+          'src/js/modernizr.custom.86080.min.js': ['src/js/modernizr.custom.86080.js']
         }
       }
     },
     cssmin: {
-      compress: {
+      dist: {
         files: {
           'src/css/style.min.css': ['src/css/style.css']
         }
@@ -45,9 +45,6 @@ module.exports = function(grunt) {
     },
     addchins : {
       dist: {
-        options: {
-          herp: true
-        },
         src: 'dist/i/*.gif'
       }
     }
@@ -72,13 +69,21 @@ module.exports = function(grunt) {
     );
   });
 
-  grunt.registerTask('inlinecss', "Inlines CSS", function () {
-    var cssmin;
+  grunt.registerTask('inliner', "Inlines CSS", function () {
+    var cssmin, modernizrmin, mainmin;
     cssmin = grunt.file.read('src/css/style.min.css');
+    modernizrmin = grunt.file.read('src/js/modernizr.custom.86080.min.js')
+    mainmin = grunt.file.read('src/js/main.js')
     grunt.file.write('src/index.html',
       grunt.template.process(
         grunt.file.read('src/template/index.html.tmpl'),
-        { data: { styles : cssmin } }
+        {
+          data: {
+            styles : cssmin,
+            modernizrjs : modernizrmin,
+            mainjs : mainmin
+          }
+        }
       )
     );
   });
@@ -87,6 +92,7 @@ module.exports = function(grunt) {
     grunt.file.delete('src/index.html');
     grunt.file.delete('src/js/main.js');
     grunt.file.delete('src/css/style.min.css');
+    grunt.file.delete('src/js/modernizr.custom.86080.min.js');
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -95,6 +101,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
-  grunt.registerTask('default', ['copy', 'addchins', 'uglify', 'cssmin', 'inlinecss', 'htmlmin', 'tidyup']);
+  grunt.registerTask('default', ['copy', 'addchins', 'uglify', 'cssmin', 'inliner', 'htmlmin', 'tidyup']);
 
 };
