@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           wrap: true
         },
         files: {
-          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js', 'src/js/ga.js']
+          'dist/script.js': ['src/js/nav.js', 'src/js/ga.js']
         }
       },
       dev: {
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
           wrap: true
         },
         files: {
-          'src/js/main.js': ['src/js/main.js', 'src/js/nav.js']
+          'dist/script.js': ['src/js/nav.js']
         }
       }
     },
@@ -52,56 +52,51 @@ module.exports = function(grunt) {
     copy: {
       dist: {
         files: [
-          {expand: true, flatten: true, src: ['src/i/**'], dest: 'dist/i', filter: 'isFile'}
+          {expand: true, flatten: true, src: ['src/i/**'], dest: 'dist/i', filter: 'isFile'},
+          {src: 'src/main.json', dest: 'dist/images.json'}
         ]
       }
     },
     addchins : {
       dist: {
-        src: 'dist/i/*.gif'
+        src: 'src/i/*.gif'
       }
     }
   });
 
-  grunt.registerMultiTask('addchins', "Finds all chins and adds them to main.js", function () {
-    var filesarr = [], filestr;
+  grunt.registerMultiTask('addchins', "Finds all chins and adds them to images.json", function () {
+    var filesobj = [], filestr;
+    fs = require('fs');
 
     this.files.forEach(function(file) {
       file.src.forEach(function(src) {
-        var filename = src.replace(/^.*[\\\/]/, '')
-        filesarr.push("'" + filename + "'");
+        var date = new Date(fs.statSync(src).mtime).toUTCString();
+        var filename = src.replace(/^.*[\\\/]/, '/i/');
+        var obj = {};
+        obj["name"] = filename;
+        obj["date"] = date;
+        filesobj.push(obj);
       });
     });
 
-    filestr = filesarr.join(", ");
-    grunt.file.write('src/js/main.js',
-      grunt.template.process(
-        grunt.file.read('src/template/main.js.tmpl'),
-        { data: { files : filestr } }
-      )
-    );
+    filestr = JSON.stringify(filesobj);
+    grunt.file.write( 'src/images.json', filestr );
   });
 
   grunt.registerTask('inliner', "Inlines CSS", function () {
     var cssmin, modernizrmin, mainmin;
     cssmin = grunt.file.read('src/css/style.min.css');
-    mainmin = grunt.file.read('src/js/main.js')
     grunt.file.write('src/index.html',
       grunt.template.process(
         grunt.file.read('src/template/index.html.tmpl'),
-        {
-          data: {
-            styles : cssmin,
-            mainjs : mainmin
-          }
-        }
+        { data: { styles : cssmin } }
       )
     );
   });
 
   grunt.registerTask('tidyup', "Remove unneeded files", function () {
     grunt.file.delete('src/index.html');
-    grunt.file.delete('src/js/main.js');
+    grunt.file.delete('src/images.json');
     grunt.file.delete('src/css/style.min.css');
   });
 
@@ -111,7 +106,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
-  grunt.registerTask('dist', ['copy', 'addchins', 'uglify:dist', 'cssmin', 'inliner', 'htmlmin', 'tidyup']);
+  grunt.registerTask('dist', ['addchins', 'copy', 'uglify:dist', 'cssmin', 'inliner', 'htmlmin', 'tidyup']);
   grunt.registerTask('dev', ['addchins', 'uglify:dev', 'cssmin', 'inliner']);
 
 };
