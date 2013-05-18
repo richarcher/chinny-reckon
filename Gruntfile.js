@@ -12,22 +12,19 @@ module.exports = function(grunt) {
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     uglify: {
       dist: {
-        options: {
-          wrap: true
-        },
+        options: {},
         files: {
-          'dist/script.js': ['src/js/nav.js', 'src/js/ga.js']
+          'dist/script.js': ['src/js/ga.js', 'src/js/app.js']
         }
       },
       dev: {
         options: {
           beautify: true,
           mangle: false,
-          compress: false,
-          wrap: true
+          compress: false
         },
         files: {
-          'dist/script.js': ['src/js/nav.js']
+          'dist/script.js': ['src/js/app.js']
         }
       }
     },
@@ -53,7 +50,7 @@ module.exports = function(grunt) {
       dist: {
         files: [
           {expand: true, flatten: true, src: ['src/i/**'], dest: 'dist/i', filter: 'isFile'},
-          {src: 'src/main.json', dest: 'dist/images.json'}
+          {src: 'src/images.json', dest: 'dist/images.json'}
         ]
       }
     },
