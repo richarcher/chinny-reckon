@@ -69,9 +69,11 @@ module.exports = function(grunt) {
       file.src.forEach(function(src) {
         var date = new Date(fs.statSync(src).mtime).toUTCString();
         var filename = src.replace(/^.*[\\\/]/, '/i/');
+        var name = src.match(/([^\/]+)(?=\.\w+$)/)[0];
         var obj = {};
-        obj["name"] = filename;
+        obj["url"] = filename;
         obj["date"] = date;
+        obj["name"] = name;
         filesobj.push(obj);
       });
     });
