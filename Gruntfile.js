@@ -11,10 +11,10 @@ module.exports = function(grunt) {
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     uglify: {
-      dist: {
+      build: {
         options: {},
         files: {
-          'dist/script.js': ['src/js/ga.js', 'src/js/app.js']
+          'build/script.js': ['src/js/ga.js', 'src/js/app.js']
         }
       },
       dev: {
@@ -24,38 +24,38 @@ module.exports = function(grunt) {
           compress: false
         },
         files: {
-          'dist/script.js': ['src/js/app.js']
+          'build/script.js': ['src/js/app.js']
         }
       }
     },
     cssmin: {
-      dist: {
+      build: {
         files: {
           'src/css/style.min.css': ['src/css/style.css']
         }
       }
     },
     htmlmin: {
-      dist: {
+      build: {
         options: {
           removeComments: true,
           collapseWhitespace: true
         },
         files: {
-          'dist/index.html': 'src/index.html'
+          'build/index.html': 'src/index.html'
         }
       }
     },
     copy: {
-      dist: {
+      build: {
         files: [
-          {expand: true, flatten: true, src: ['src/i/**'], dest: 'dist/i', filter: 'isFile'},
-          {src: 'src/images.json', dest: 'dist/images.json'}
+          {expand: true, flatten: true, src: ['src/i/**'], dest: 'build/i', filter: 'isFile'},
+          {src: 'src/images.json', dest: 'build/images.json'}
         ]
       }
     },
     addchins : {
-      dist: {
+      build: {
         src: 'src/i/*.gif'
       }
     }
@@ -105,7 +105,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
-  grunt.registerTask('dist', ['addchins', 'copy', 'uglify:dist', 'cssmin', 'inliner', 'htmlmin', 'tidyup']);
+  grunt.registerTask('build', ['addchins', 'copy', 'uglify:build', 'cssmin', 'inliner', 'htmlmin', 'tidyup']);
   grunt.registerTask('dev', ['addchins', 'uglify:dev', 'cssmin', 'inliner']);
 
 };
