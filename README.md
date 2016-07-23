@@ -1,7 +1,7 @@
 Chinny Reckon
 =============
 
-[chinnyreckon.com](http://chinnyreckon.com)
+[http://chinnyreckon.com.s3-website-us-east-1.amazonaws.com/](http://chinnyreckon.com.s3-website-us-east-1.amazonaws.com/)
 
 The ultimate expression of chin stroking incredulity.
 
